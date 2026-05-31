@@ -129,6 +129,8 @@ KILN tracks more than habits. It tracks the user as a system. The dimensions are
 - **SleepWindow** — bedtime + wake time, measured against target window.
 - **Reflections** — Reflector output, one per day plus weekly synthesis.
 
+Schema source of truth: supabase/migrations/
+
 ---
 
 ## 7. Architectural rules (non-negotiable)
