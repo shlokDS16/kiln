@@ -1,16 +1,15 @@
 // =============================================================================
-// Tailwind config — mirrors CLAUDE.md §5 design tokens.
+// Tailwind config — mirrors CLAUDE.md §5 (cinematic editorial Living Kiln palette).
 //
-// Intentional choices:
-//   * `theme.spacing`   REPLACED (not extended) with the 9-value brutalist scale.
-//     This removes Tailwind's default p-0.5, p-1.5, p-2.5 etc. — by design, so
-//     the only spacing values the app can express are CLAUDE.md's tokens.
-//   * `theme.borderRadius` REPLACED so `rounded`/`rounded-*` always resolves
-//     to 0px. Buttons that need 2px (CLAUDE.md §5) use an inline style.
-//   * `theme.extend.colors` ADDED — keeps Tailwind defaults available too.
-//   * fontFamily is extended; weight is applied separately via `font-black`
-//     (which maps to font-weight: 900) since RN treats family + weight as
-//     independent style props.
+// Tailwind uses flat color keys so class names are clean (`bg-deep`,
+// `text-cream`, `border-hairline`, `text-ember`). The grouped TypeScript
+// shape in CLAUDE.md §5 (`colors.bg.deep`, `colors.accent.ember`) is for
+// code that imports a theme object — Tailwind's class naming is an
+// implementation detail of the design system, not part of the constitution.
+//
+// Time-of-day ember shifts (consumed by useTimeOfDay) live as `time-{period}`.
+//
+// Spacing + borderRadius unchanged from prior config — still brutalist.
 // =============================================================================
 
 /** @type {import('tailwindcss').Config} */
@@ -21,7 +20,6 @@ module.exports = {
   ],
   presets: [require("nativewind/preset")],
   theme: {
-    // brutalist scale — replaces Tailwind defaults
     spacing: {
       0: "0px",
       1: "4px",
@@ -33,35 +31,43 @@ module.exports = {
       7: "48px",
       8: "64px",
     },
-    // brutalist rule — every `rounded*` resolves to 0
     borderRadius: {
       none: "0px",
       DEFAULT: "0px",
     },
     extend: {
       colors: {
-        bg:       "#0A0A0A", // near-black, slight warmth
-        surface:  "#141414", // raised cards
-        border:   "#1F1F1F", // hairline dividers
-        text:     "#F5F5F5", // primary text
-        textDim:  "#737373", // metadata, labels
-        accent:   "#E63946", // KILN red — single accent, sparingly
-        // CLAUDE.md aliases — pointing at existing colors, not new hues
-        success:  "#F5F5F5",
-        warning:  "#E63946",
-        error:    "#E63946",
+        // backgrounds (warm dark)
+        deep:     "#0E0906",
+        surface:  "#1A1310",
+        hot:      "#2A1A12",
+        // text
+        cream:    "#F4EEE3",
+        dim:      "#8A7A6E",
+        // accents
+        ember:    "#E85D2A",
+        crimson:  "#C73A2D",
+        gold:     "#E8B14E",
+        // borders
+        hairline: "#2A1F18",
+        // time-of-day ember shifts (consumed by useTimeOfDay paletteShift)
+        "time-morning": "#E85D2A",
+        "time-midday":  "#FF6B2C",
+        "time-evening": "#C73A2D",
+        "time-late":    "#8B2419",
       },
       fontFamily: {
-        // pair `font-display font-black` for Georgia 900
+        // Three-tier serif system per CLAUDE.md §5
+        // (placeholders — Phase 3.5 swaps display/body to PP Editorial New, mono to JetBrains Mono via expo-font)
         display: ["Georgia"],
-        body:    ["System"],
+        body:    ["Georgia"],
         mono:    ["Menlo"],
       },
       fontSize: {
         hero:  "96px",
-        h1:    "48px",
+        h1:    "56px",
         h2:    "32px",
-        h3:    "24px",
+        h3:    "22px",
         body:  "16px",
         label: "12px",
         micro: "10px",

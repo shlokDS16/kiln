@@ -1,4 +1,4 @@
-// Onboarding stack — no headers, no transitions (each screen is its own moment).
+// Onboarding stack â€” no headers, no transitions (each screen is its own moment).
 import { Stack } from 'expo-router';
 
 export default function OnboardingLayout() {
@@ -7,7 +7,7 @@ export default function OnboardingLayout() {
       screenOptions={{
         headerShown: false,
         animation: 'none',
-        contentStyle: { backgroundColor: '#0A0A0A' },
+        contentStyle: { backgroundColor: '#0E0906' },
       }}
     />
   );

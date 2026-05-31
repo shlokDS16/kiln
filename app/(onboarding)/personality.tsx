@@ -1,5 +1,5 @@
 // =============================================================================
-// Personality — 10 BFI-10 questions, one per full-screen page.
+// Personality â€” 10 BFI-10 questions, one per full-screen page.
 //
 // Implementation: horizontal pagingEnabled FlatList. Swipe to advance, or tap
 // NEXT (enabled only after the slider for the current question has been
@@ -60,17 +60,17 @@ export default function Personality() {
         const enabled = touched.has(item.idx);
         const isLast = item.idx === QUESTIONS.length - 1;
         return (
-          <View style={{ width }} className="bg-bg px-5 pt-7 pb-7">
+          <View style={{ width }} className="bg-deep px-5 pt-7 pb-7">
             <View className="flex-1">
-              {/* counter — top-left */}
-              <Text className="text-textDim font-mono text-micro uppercase tracking-widest">
+              {/* counter â€” top-left */}
+              <Text className="text-dim font-mono text-micro uppercase tracking-widest">
                 {String(item.idx + 1).padStart(2, "0")} / {String(QUESTIONS.length).padStart(2, "0")}
               </Text>
 
               {/* question + slider */}
               <View className="flex-1 justify-center">
                 <Text
-                  className="text-text font-display font-black mb-7"
+                  className="text-cream font-display font-black mb-7"
                   style={{ fontSize: 28, lineHeight: 34 }}
                 >
                   {item.statement}
@@ -88,10 +88,10 @@ export default function Personality() {
                   }
                 />
                 <View className="flex-row justify-between mt-2">
-                  <Text className="text-textDim font-mono text-micro uppercase tracking-widest">
+                  <Text className="text-dim font-mono text-micro uppercase tracking-widest">
                     not me
                   </Text>
-                  <Text className="text-textDim font-mono text-micro uppercase tracking-widest">
+                  <Text className="text-dim font-mono text-micro uppercase tracking-widest">
                     exactly me
                   </Text>
                 </View>
@@ -101,9 +101,9 @@ export default function Personality() {
               <Pressable
                 onPress={goNext}
                 disabled={!enabled}
-                className={`border border-accent py-4 active:opacity-60 ${enabled ? "" : "opacity-30"}`}
+                className={`border border-ember py-4 active:opacity-60 ${enabled ? "" : "opacity-30"}`}
               >
-                <Text className="text-text font-mono text-body text-center uppercase tracking-widest">
+                <Text className="text-cream font-mono text-body text-center uppercase tracking-widest">
                   {isLast ? "continue" : "next"}
                 </Text>
               </Pressable>

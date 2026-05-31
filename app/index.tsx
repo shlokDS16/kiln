@@ -1,11 +1,11 @@
 // =============================================================================
-// Root route — the initial routing decision based on auth + onboarding state.
+// Root route â€” the initial routing decision based on auth + onboarding state.
 //
 // Flow (per runbook Step 2.4):
-//   1. loading           → render nothing (auth context still hydrating)
-//   2. !session          → /(onboarding)/welcome
-//   3. session, no row in personality_profile → /(onboarding)/personality
-//   4. session + profile → /(tabs)/today
+//   1. loading           â†’ render nothing (auth context still hydrating)
+//   2. !session          â†’ /(onboarding)/welcome
+//   3. session, no row in personality_profile â†’ /(onboarding)/personality
+//   4. session + profile â†’ /(tabs)/today
 //
 // The personality_profile lookup is RLS-guarded by auth.uid() = user_id, so
 // it transparently scopes to the signed-in user; no manual filter needed beyond
@@ -43,8 +43,8 @@ export default function Index() {
 
   if (loading || (session && profileExists === null)) {
     return (
-      <View className="flex-1 items-center justify-center bg-bg">
-        <ActivityIndicator color="#F5F5F5" />
+      <View className="flex-1 items-center justify-center bg-deep">
+        <ActivityIndicator color="#F4EEE3" />
       </View>
     );
   }

@@ -1,10 +1,10 @@
 // =============================================================================
-// Routine preview — last screen of onboarding. Reads the Gemini response from
+// Routine preview â€” last screen of onboarding. Reads the Gemini response from
 // the Zustand store, presents the synthesis paragraph + a week-grid of habits,
 // and gates entry into the main app on the user pressing ACTIVATE.
 //
 // The routine row in Postgres was already inserted with is_active=true by the
-// Edge Function — so ACTIVATE here is purely a navigation event (clears the
+// Edge Function â€” so ACTIVATE here is purely a navigation event (clears the
 // onboarding stack and sends the user to (tabs)/today). REGENERATE pops back
 // to goals so the user can refine inputs and re-call the Orchestrator.
 // =============================================================================
@@ -41,15 +41,15 @@ export default function RoutinePreview() {
 
   if (!data) {
     return (
-      <View className="flex-1 bg-bg items-center justify-center px-5">
-        <Text className="text-textDim font-mono text-micro uppercase tracking-widest text-center">
+      <View className="flex-1 bg-deep items-center justify-center px-5">
+        <Text className="text-dim font-mono text-micro uppercase tracking-widest text-center">
           no routine to preview yet
         </Text>
         <Pressable
-          className="mt-5 border border-accent px-5 py-3 active:opacity-60"
+          className="mt-5 border border-ember px-5 py-3 active:opacity-60"
           onPress={() => router.replace("/(onboarding)/goals")}
         >
-          <Text className="text-text font-mono text-body uppercase tracking-widest">
+          <Text className="text-cream font-mono text-body uppercase tracking-widest">
             back to goals
           </Text>
         </Pressable>
@@ -69,7 +69,7 @@ export default function RoutinePreview() {
   };
 
   return (
-    <View className="flex-1 bg-bg">
+    <View className="flex-1 bg-deep">
       <ScrollView
         contentContainerStyle={{
           paddingHorizontal: 24,
@@ -77,20 +77,20 @@ export default function RoutinePreview() {
           paddingBottom: 24,
         }}
       >
-        {/* Synthesis — the first thing the user reads */}
+        {/* Synthesis â€” the first thing the user reads */}
         <Text
-          className="text-text font-display"
+          className="text-cream font-display"
           style={{ fontSize: 18, lineHeight: 28 }}
         >
           {data.synthesis}
         </Text>
 
         {/* divider */}
-        <View className="h-px bg-accent mt-7 mb-5" />
+        <View className="h-px bg-ember mt-7 mb-5" />
 
         {/* YOUR WEEK */}
-        <Text className="text-textDim font-mono text-micro uppercase tracking-widest mb-5">
-          YOUR WEEK · wakes {data.routine.wake_time} · sleeps {data.routine.sleep_time}
+        <Text className="text-dim font-mono text-micro uppercase tracking-widest mb-5">
+          YOUR WEEK Â· wakes {data.routine.wake_time} Â· sleeps {data.routine.sleep_time}
         </Text>
 
         {DAY_ORDER.map((day) => {
@@ -98,18 +98,18 @@ export default function RoutinePreview() {
           if (habits.length === 0) return null;
           return (
             <View key={day} className="mb-6">
-              <Text className="text-textDim font-mono text-micro uppercase tracking-widest mb-3">
+              <Text className="text-dim font-mono text-micro uppercase tracking-widest mb-3">
                 {DAY_LABEL[day]}
               </Text>
               {habits.map((h, i) => (
                 <View key={`${day}-${i}`} className="flex-row items-baseline mb-2">
-                  <Text className="text-accent font-mono text-body" style={{ width: 64 }}>
+                  <Text className="text-ember font-mono text-body" style={{ width: 64 }}>
                     {h.scheduled_time}
                   </Text>
                   <View className="flex-1 mr-3">
-                    <Text className="text-text font-body text-body">{h.name}</Text>
+                    <Text className="text-cream font-body text-body">{h.name}</Text>
                   </View>
-                  <Text className="text-textDim font-mono text-micro uppercase tracking-widest">
+                  <Text className="text-dim font-mono text-micro uppercase tracking-widest">
                     {h.dimension}
                   </Text>
                 </View>
@@ -120,12 +120,12 @@ export default function RoutinePreview() {
       </ScrollView>
 
       {/* bottom action bar */}
-      <View className="px-5 pb-7 pt-3 border-t border-border bg-bg">
+      <View className="px-5 pb-7 pt-3 border-t border-hairline bg-deep">
         <Pressable
           onPress={onActivate}
-          className="bg-accent py-4 active:opacity-60"
+          className="bg-ember py-4 active:opacity-60"
         >
-          <Text className="text-bg font-mono text-body text-center uppercase tracking-widest">
+          <Text className="text-deep font-mono text-body text-center uppercase tracking-widest">
             activate
           </Text>
         </Pressable>
@@ -133,7 +133,7 @@ export default function RoutinePreview() {
           onPress={onRegenerate}
           className="mt-3 active:opacity-60 py-3"
         >
-          <Text className="text-textDim font-mono text-micro text-center uppercase tracking-widest">
+          <Text className="text-dim font-mono text-micro text-center uppercase tracking-widest">
             regenerate
           </Text>
         </Pressable>

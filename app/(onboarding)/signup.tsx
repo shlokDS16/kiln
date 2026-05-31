@@ -1,5 +1,5 @@
 // =============================================================================
-// Signup — email + password account creation.
+// Signup â€” email + password account creation.
 //
 // react-hook-form drives state; zod validates client-side. On submit, calls
 // supabase.auth.signUp via the auth context. Server errors render inline in
@@ -7,7 +7,7 @@
 //
 // Visual rules:
 //   - mono font on inputs and labels
-//   - border-accent on focus (1px), border-border at rest (1px)
+//   - border-ember on focus (1px), border-hairline at rest (1px)
 //   - no border-radius (brutalist default)
 //   - labels above inputs in mono micro uppercase tracking-widest
 // =============================================================================
@@ -58,15 +58,15 @@ export default function Signup() {
   };
 
   return (
-    <View className="flex-1 bg-bg px-5 pb-7 pt-7">
+    <View className="flex-1 bg-deep px-5 pb-7 pt-7">
       <View className="flex-1 justify-center">
-        <Text className="text-text font-display font-black mb-6" style={{ fontSize: 32 }}>
+        <Text className="text-cream font-display font-black mb-6" style={{ fontSize: 32 }}>
           create your account
         </Text>
 
         {/* email */}
         <View className="mb-5">
-          <Text className="text-textDim font-mono text-micro uppercase tracking-widest mb-2">
+          <Text className="text-dim font-mono text-micro uppercase tracking-widest mb-2">
             email
           </Text>
           <Controller
@@ -81,19 +81,19 @@ export default function Signup() {
                 autoCapitalize="none"
                 autoComplete="email"
                 keyboardType="email-address"
-                placeholderTextColor="#737373"
-                className={`text-text font-mono text-body bg-surface px-4 py-3 border ${emailFocused ? 'border-accent' : 'border-border'}`}
+                placeholderTextColor="#8A7A6E"
+                className={`text-cream font-mono text-body bg-surface px-4 py-3 border ${emailFocused ? 'border-ember' : 'border-hairline'}`}
               />
             )}
           />
           {errors.email && (
-            <Text className="text-accent font-mono text-micro mt-1">{errors.email.message}</Text>
+            <Text className="text-ember font-mono text-micro mt-1">{errors.email.message}</Text>
           )}
         </View>
 
         {/* password */}
         <View className="mb-5">
-          <Text className="text-textDim font-mono text-micro uppercase tracking-widest mb-2">
+          <Text className="text-dim font-mono text-micro uppercase tracking-widest mb-2">
             password
           </Text>
           <Controller
@@ -108,18 +108,18 @@ export default function Signup() {
                 secureTextEntry
                 autoCapitalize="none"
                 autoComplete="new-password"
-                placeholderTextColor="#737373"
-                className={`text-text font-mono text-body bg-surface px-4 py-3 border ${passwordFocused ? 'border-accent' : 'border-border'}`}
+                placeholderTextColor="#8A7A6E"
+                className={`text-cream font-mono text-body bg-surface px-4 py-3 border ${passwordFocused ? 'border-ember' : 'border-hairline'}`}
               />
             )}
           />
           {errors.password && (
-            <Text className="text-accent font-mono text-micro mt-1">{errors.password.message}</Text>
+            <Text className="text-ember font-mono text-micro mt-1">{errors.password.message}</Text>
           )}
         </View>
 
         {serverError && (
-          <Text className="text-accent font-mono text-micro mt-3">{serverError}</Text>
+          <Text className="text-ember font-mono text-micro mt-3">{serverError}</Text>
         )}
       </View>
 
@@ -127,12 +127,12 @@ export default function Signup() {
         <Pressable
           onPress={handleSubmit(onSubmit)}
           disabled={submitting}
-          className={`border border-accent py-4 active:opacity-60 ${submitting ? 'opacity-50' : ''}`}
+          className={`border border-ember py-4 active:opacity-60 ${submitting ? 'opacity-50' : ''}`}
         >
           {submitting ? (
-            <ActivityIndicator color="#F5F5F5" />
+            <ActivityIndicator color="#F4EEE3" />
           ) : (
-            <Text className="text-text font-mono text-body text-center uppercase tracking-widest">
+            <Text className="text-cream font-mono text-body text-center uppercase tracking-widest">
               create account
             </Text>
           )}
@@ -140,7 +140,7 @@ export default function Signup() {
 
         <Link href="/(onboarding)/signin" asChild>
           <Pressable className="mt-5 active:opacity-60">
-            <Text className="text-textDim font-mono text-micro text-center uppercase tracking-widest">
+            <Text className="text-dim font-mono text-micro text-center uppercase tracking-widest">
               already have an account?
             </Text>
           </Pressable>

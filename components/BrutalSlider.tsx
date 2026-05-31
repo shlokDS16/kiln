@@ -1,15 +1,15 @@
 // =============================================================================
-// BrutalSlider — 0-100 horizontal slider, drawn in plain RN primitives.
+// BrutalSlider â€” 0-100 horizontal slider, drawn in plain RN primitives.
 //
-// Visual rules (CLAUDE.md §1, brutalist neo-editorial):
+// Visual rules (CLAUDE.md Â§1, brutalist neo-editorial):
 //   * 1px horizontal track in the primary text color
 //   * 12px square thumb, no shadow, no radius, snaps to nothing
 //   * Touch the track anywhere to set the value (tap-to-set + drag)
-//   * onFirstTouch fires exactly once per slider mount — the parent uses it
+//   * onFirstTouch fires exactly once per slider mount â€” the parent uses it
 //     to know "the user has engaged with this question" (enables NEXT)
 //
 // NOTE: The runbook calls for a Skia-drawn slider. We're using PanResponder +
-// onLayout instead — same visual, no extra deps. When Phase 3 brings Skia in
+// onLayout instead â€” same visual, no extra deps. When Phase 3 brings Skia in
 // for charts, we can swap this for a Skia implementation if needed.
 // =============================================================================
 
@@ -23,7 +23,7 @@ type Props = {
 };
 
 const THUMB = 12;
-const TRACK_HEIGHT = 48; // touchable strip height — bigger than the visible line for easy hitting
+const TRACK_HEIGHT = 48; // touchable strip height â€” bigger than the visible line for easy hitting
 
 export function BrutalSlider({ value, onChange, onFirstTouch }: Props) {
   const trackRef = useRef<View>(null);
@@ -75,7 +75,7 @@ export function BrutalSlider({ value, onChange, onFirstTouch }: Props) {
           top: (TRACK_HEIGHT - THUMB) / 2,
           width: THUMB,
           height: THUMB,
-          backgroundColor: "#F5F5F5",
+          backgroundColor: "#F4EEE3",
         }}
       />
     </View>

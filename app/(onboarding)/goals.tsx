@@ -1,12 +1,12 @@
 // =============================================================================
-// Goals — three multi-line text inputs that capture the user's
+// Goals â€” three multi-line text inputs that capture the user's
 // goals / non-negotiables / current pain. Pressing SYNTHESIZE:
 //   1. Scores the BFI-10 sliders into the five Big Five averages
 //   2. POSTs scores + free-text to the generate_routine Edge Function
 //   3. Stores the Gemini response in the onboarding store
 //   4. Navigates to /routine-preview
 //
-// Field labels are intentional brand copy — do not soften them.
+// Field labels are intentional brand copy â€” do not soften them.
 // =============================================================================
 
 import { useRouter } from "expo-router";
@@ -92,7 +92,7 @@ export default function Goals() {
 
   return (
     <ScrollView
-      className="flex-1 bg-bg"
+      className="flex-1 bg-deep"
       contentContainerStyle={{ paddingHorizontal: 24, paddingTop: 48, paddingBottom: 48 }}
       keyboardShouldPersistTaps="handled"
     >
@@ -113,7 +113,7 @@ export default function Goals() {
       />
 
       {serverError && (
-        <Text className="text-accent font-mono text-micro mb-3">
+        <Text className="text-ember font-mono text-micro mb-3">
           {serverError}
         </Text>
       )}
@@ -121,12 +121,12 @@ export default function Goals() {
       <Pressable
         onPress={onSynthesize}
         disabled={submitting}
-        className={`border border-accent py-4 active:opacity-60 ${submitting ? "opacity-50" : ""}`}
+        className={`border border-ember py-4 active:opacity-60 ${submitting ? "opacity-50" : ""}`}
       >
         {submitting ? (
-          <ActivityIndicator color="#F5F5F5" />
+          <ActivityIndicator color="#F4EEE3" />
         ) : (
-          <Text className="text-text font-mono text-body text-center uppercase tracking-widest">
+          <Text className="text-cream font-mono text-body text-center uppercase tracking-widest">
             synthesize
           </Text>
         )}
@@ -147,7 +147,7 @@ function Field({
   const [focused, setFocused] = useState(false);
   return (
     <View className="mb-6">
-      <Text className="text-textDim font-mono text-micro uppercase tracking-widest mb-2">
+      <Text className="text-dim font-mono text-micro uppercase tracking-widest mb-2">
         {label}
       </Text>
       <TextInput
@@ -157,7 +157,7 @@ function Field({
         onBlur={() => setFocused(false)}
         multiline
         maxLength={500}
-        className={`text-text font-mono text-body bg-surface px-4 py-3 border ${focused ? "border-accent" : "border-border"}`}
+        className={`text-cream font-mono text-body bg-surface px-4 py-3 border ${focused ? "border-ember" : "border-hairline"}`}
         style={{ minHeight: 110, textAlignVertical: "top" }}
       />
     </View>

@@ -1,5 +1,5 @@
 // =============================================================================
-// Signin — near-duplicate of signup, uses signInWithPassword.
+// Signin â€” near-duplicate of signup, uses signInWithPassword.
 // On success: navigate to "/" so the root router decides where to send the
 // user (personality if no profile row yet, today if already onboarded).
 // =============================================================================
@@ -52,14 +52,14 @@ export default function Signin() {
   };
 
   return (
-    <View className="flex-1 bg-bg px-5 pb-7 pt-7">
+    <View className="flex-1 bg-deep px-5 pb-7 pt-7">
       <View className="flex-1 justify-center">
-        <Text className="text-text font-display font-black mb-6" style={{ fontSize: 32 }}>
+        <Text className="text-cream font-display font-black mb-6" style={{ fontSize: 32 }}>
           welcome back
         </Text>
 
         <View className="mb-5">
-          <Text className="text-textDim font-mono text-micro uppercase tracking-widest mb-2">
+          <Text className="text-dim font-mono text-micro uppercase tracking-widest mb-2">
             email
           </Text>
           <Controller
@@ -74,18 +74,18 @@ export default function Signin() {
                 autoCapitalize="none"
                 autoComplete="email"
                 keyboardType="email-address"
-                placeholderTextColor="#737373"
-                className={`text-text font-mono text-body bg-surface px-4 py-3 border ${emailFocused ? 'border-accent' : 'border-border'}`}
+                placeholderTextColor="#8A7A6E"
+                className={`text-cream font-mono text-body bg-surface px-4 py-3 border ${emailFocused ? 'border-ember' : 'border-hairline'}`}
               />
             )}
           />
           {errors.email && (
-            <Text className="text-accent font-mono text-micro mt-1">{errors.email.message}</Text>
+            <Text className="text-ember font-mono text-micro mt-1">{errors.email.message}</Text>
           )}
         </View>
 
         <View className="mb-5">
-          <Text className="text-textDim font-mono text-micro uppercase tracking-widest mb-2">
+          <Text className="text-dim font-mono text-micro uppercase tracking-widest mb-2">
             password
           </Text>
           <Controller
@@ -100,18 +100,18 @@ export default function Signin() {
                 secureTextEntry
                 autoCapitalize="none"
                 autoComplete="current-password"
-                placeholderTextColor="#737373"
-                className={`text-text font-mono text-body bg-surface px-4 py-3 border ${passwordFocused ? 'border-accent' : 'border-border'}`}
+                placeholderTextColor="#8A7A6E"
+                className={`text-cream font-mono text-body bg-surface px-4 py-3 border ${passwordFocused ? 'border-ember' : 'border-hairline'}`}
               />
             )}
           />
           {errors.password && (
-            <Text className="text-accent font-mono text-micro mt-1">{errors.password.message}</Text>
+            <Text className="text-ember font-mono text-micro mt-1">{errors.password.message}</Text>
           )}
         </View>
 
         {serverError && (
-          <Text className="text-accent font-mono text-micro mt-3">{serverError}</Text>
+          <Text className="text-ember font-mono text-micro mt-3">{serverError}</Text>
         )}
       </View>
 
@@ -119,12 +119,12 @@ export default function Signin() {
         <Pressable
           onPress={handleSubmit(onSubmit)}
           disabled={submitting}
-          className={`border border-accent py-4 active:opacity-60 ${submitting ? 'opacity-50' : ''}`}
+          className={`border border-ember py-4 active:opacity-60 ${submitting ? 'opacity-50' : ''}`}
         >
           {submitting ? (
-            <ActivityIndicator color="#F5F5F5" />
+            <ActivityIndicator color="#F4EEE3" />
           ) : (
-            <Text className="text-text font-mono text-body text-center uppercase tracking-widest">
+            <Text className="text-cream font-mono text-body text-center uppercase tracking-widest">
               sign in
             </Text>
           )}
@@ -132,7 +132,7 @@ export default function Signin() {
 
         <Link href="/(onboarding)/signup" asChild>
           <Pressable className="mt-5 active:opacity-60">
-            <Text className="text-textDim font-mono text-micro text-center uppercase tracking-widest">
+            <Text className="text-dim font-mono text-micro text-center uppercase tracking-widest">
               new here?
             </Text>
           </Pressable>

@@ -1,5 +1,5 @@
 // =============================================================================
-// (tabs) layout — three top-level destinations once onboarded.
+// (tabs) layout â€” three top-level destinations once onboarded.
 // Tab bar labels are mono micro tracking-widest, matching the rest of KILN.
 // Phase 3 swaps these screens for the real Today / Dashboard / Routines builds.
 // =============================================================================
@@ -12,12 +12,12 @@ export default function TabsLayout() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#0A0A0A',
-          borderTopColor: '#1F1F1F',
+          backgroundColor: '#0E0906',
+          borderTopColor: '#2A1F18',
           borderTopWidth: 1,
         },
-        tabBarActiveTintColor: '#F5F5F5',
-        tabBarInactiveTintColor: '#737373',
+        tabBarActiveTintColor: '#F4EEE3',
+        tabBarInactiveTintColor: '#8A7A6E',
         tabBarLabelStyle: {
           fontFamily: 'Menlo',
           fontSize: 10,
