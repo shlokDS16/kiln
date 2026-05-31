@@ -31,7 +31,8 @@
         {
           "image": "./assets/splash.png",
           "resizeMode": "cover",
-          "backgroundColor": "#0E0906"
+          "backgroundColor": "#0E0906",
+          "_comment": "TODO regenerate at 2732 before v0.2"
         }
       ]
     ],
