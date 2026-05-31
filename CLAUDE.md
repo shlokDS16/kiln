@@ -235,4 +235,13 @@ UI never uses "completed / skipped." Always use the kiln metaphor:
 - **Hairlines**: 1px, color `colors.border.hairline`. Never `#333` or any gray.
 - **No rounded corners on data containers.** Buttons may use `borderRadius: 2` max. Cards, modal bodies, habit rows: `borderRadius: 0`.
 
+---
+
+## 14. Roadmap
+
+- **Phase 3.5** — Custom typography (replace Georgia/Menlo placeholders with PP Editorial New + JetBrains Mono via expo-font)
+- **Phase 4** — Apple HealthKit + EAS dev client
+- **Phase 4.5** — Time-of-day palette shifts get tied to HealthKit data (e.g., morning palette doesn't activate until phone unlocks after sleep)
+- **Phase 5** — Focus session timer + voice journaling via Gemini multimodal
+
 End of CLAUDE.md.
