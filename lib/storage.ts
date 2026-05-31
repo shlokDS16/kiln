@@ -9,9 +9,11 @@
 // auth stores (session + refresh token).
 // =============================================================================
 
-import { MMKV } from "react-native-mmkv";
+import { createMMKV } from "react-native-mmkv";
 
-const mmkv = new MMKV({ id: "kiln-auth" });
+// react-native-mmkv v4 replaced `new MMKV()` with the `createMMKV()` factory
+// (`MMKV` is a type now). Same instance, same "kiln-auth" namespace.
+const mmkv = createMMKV({ id: "kiln-auth" });
 
 export const Storage = {
   getItem: async (key: string): Promise<string | null> => mmkv.getString(key) ?? null,
@@ -19,6 +21,6 @@ export const Storage = {
     mmkv.set(key, value);
   },
   removeItem: async (key: string): Promise<void> => {
-    mmkv.delete(key);
+    mmkv.remove(key);
   },
 };
