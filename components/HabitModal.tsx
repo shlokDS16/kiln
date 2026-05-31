@@ -30,6 +30,7 @@ import { useDeleteHabit } from "../lib/hooks/use-delete-habit";
 import { useUpdateHabit } from "../lib/hooks/use-update-habit";
 import type { DayKey, HabitDimension } from "../lib/hooks/types";
 import type { RoutineHabit } from "../lib/hooks/use-all-habits";
+import { WheelTimePicker, type TimeValue } from "./WheelTimePicker";
 
 type Props = {
   visible: boolean;
@@ -59,6 +60,24 @@ const DAYS: { key: DayKey; short: string }[] = [
 
 const TIME_RE = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
+// HH:MM string <-> wheel {h,m}. Existing habits get their minute snapped to the
+// nearest 15 so the wheel (00/15/30/45) lands on a real cell.
+function parseHHMM(s: string): TimeValue {
+  const m = /^(\d{1,2}):(\d{2})$/.exec(s);
+  if (!m) return { h: 7, m: 0 };
+  return { h: Math.min(23, Math.max(0, Number(m[1]))), m: Math.min(59, Math.max(0, Number(m[2]))) };
+}
+function snap15(min: number): number {
+  return [0, 15, 30, 45].reduce((a, b) => (Math.abs(b - min) <= Math.abs(a - min) ? b : a));
+}
+function formatHHMM(t: TimeValue): string {
+  return `${String(t.h).padStart(2, "0")}:${String(t.m).padStart(2, "0")}`;
+}
+function snapScheduled(s: string): string {
+  const p = parseHHMM(s);
+  return formatHHMM({ h: p.h, m: snap15(p.m) });
+}
+
 export function HabitModal({ visible, onClose, existingHabit }: Props) {
   const editing = !!existingHabit;
   const createMut = useCreateHabit();
@@ -80,14 +99,14 @@ export function HabitModal({ visible, onClose, existingHabit }: Props) {
     if (existingHabit) {
       setName(existingHabit.name);
       setDimension(existingHabit.dimension);
-      setScheduledTime(existingHabit.scheduled_time);
+      setScheduledTime(snapScheduled(existingHabit.scheduled_time));
       setDurationStr(String(existingHabit.duration_min));
       setDays(existingHabit.days ?? []);
       setRationale(existingHabit.rationale ?? "");
     } else {
       setName("");
       setDimension("habit");
-      setScheduledTime("");
+      setScheduledTime("07:00");
       setDurationStr("");
       setDays([]);
       setRationale("");
@@ -212,35 +231,24 @@ export function HabitModal({ visible, onClose, existingHabit }: Props) {
               </View>
             </Field>
 
-            <View className="flex-row">
-              <View className="flex-1 mr-4">
-                <Field label="TIME (HH:MM)">
-                  <TextInput
-                    value={scheduledTime}
-                    onChangeText={setScheduledTime}
-                    placeholder="06:30"
-                    placeholderTextColor="#8A7A6E"
-                    autoCapitalize="none"
-                    keyboardType="numbers-and-punctuation"
-                    className="text-cream font-mono bg-deep px-4 py-3 border border-hairline"
-                    style={{ fontSize: 16 }}
-                  />
-                </Field>
-              </View>
-              <View className="flex-1">
-                <Field label="DURATION (MIN)">
-                  <TextInput
-                    value={durationStr}
-                    onChangeText={setDurationStr}
-                    placeholder="45"
-                    placeholderTextColor="#8A7A6E"
-                    keyboardType="number-pad"
-                    className="text-cream font-mono bg-deep px-4 py-3 border border-hairline"
-                    style={{ fontSize: 16 }}
-                  />
-                </Field>
-              </View>
-            </View>
+            <Field label="TIME">
+              <WheelTimePicker
+                value={parseHHMM(scheduledTime)}
+                onChange={(t) => setScheduledTime(formatHHMM(t))}
+              />
+            </Field>
+
+            <Field label="DURATION (MIN)">
+              <TextInput
+                value={durationStr}
+                onChangeText={setDurationStr}
+                placeholder="45"
+                placeholderTextColor="#8A7A6E"
+                keyboardType="number-pad"
+                className="text-cream font-mono bg-deep px-4 py-3 border border-hairline"
+                style={{ fontSize: 16 }}
+              />
+            </Field>
 
             <Field label="DAYS">
               <View className="flex-row">
