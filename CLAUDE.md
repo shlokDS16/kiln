@@ -12,6 +12,8 @@ KILN is not a habit tracker. It is a transformation system. The aesthetic is edi
 
 No emojis in production copy. No exclamation marks in nudges. No badges, no streaks-with-fire-icons, no "Great job!" toasts. Streaks are tracked but presented as bare numerals in brutal type. Achievement is shown through visual weight, not animation flourishes.
 
+KILN's visual identity is cinematic editorial, not corporate brutalist. Reference: warm dark cinematography, editorial magazine layouts, Apple Design Award winners. The app contains a signature visual element — the Kiln Scene — which lives on the Today screen and reflects the user's behavioral state through heat, embers, and clay form. The aesthetic should feel like opening a leather-bound journal in firelight, not a productivity dashboard.
+
 ---
 
 ## 2. Architecture at a glance
@@ -33,8 +35,8 @@ All three agents run inside Supabase Edge Functions. API keys never touch the cl
 | Layer | Choice | Notes |
 |---|---|---|
 | Mobile | Expo SDK 55+ / React Native 0.79+ / TypeScript strict | Expo Router for navigation |
-| Animation | Reanimated 3, Moti, React Native Skia 2.6.x | Skia for charts and custom graphics; Moti for declarative micro-interactions |
-| 3D | @react-three/fiber-native + expo-gl | Used only in onboarding intro and weekly report ritual |
+| Animation | Reanimated 3, Moti, React Native Skia 2.6.x | **Phase 3 implementation** for Living Kiln scene + streak chart. Skia for charts and custom graphics; Moti for declarative micro-interactions |
+| 3D | @react-three/fiber-native + expo-gl | **Phase 8 planned** — upgrades the Kiln Scene from 2D Skia to volumetric 3D. Also onboarding intro, weekly report ritual |
 | State | Zustand for client state, React Query for server state | No Redux |
 | Backend | Supabase (Postgres, Auth, Edge Functions, Realtime, pg_cron) | Singapore region |
 | AI — heavy | Anthropic Claude Sonnet 4.5 | Orchestrator + Reflector |
@@ -85,26 +87,44 @@ kiln/
 ## 5. Design tokens
 
 ```ts
-// theme/colors.ts
+// theme/colors.ts — Living Kiln palette (warm dark, ember-toned)
 export const colors = {
-  bg: '#0A0A0A',        // near-black, slight warmth
-  surface: '#141414',    // raised cards
-  border: '#1F1F1F',     // hairline dividers
-  text: '#F5F5F5',       // primary text
-  textDim: '#737373',    // metadata, labels
-  accent: '#E63946',     // KILN red — single accent, use sparingly
-  success: '#F5F5F5',    // success uses white, not green
-  warning: '#E63946',    // warning uses accent
-  error: '#E63946',      // no separate error color
+  bg: {
+    deep: '#0E0906',      // true background — warm near-black, brown undertone
+    surface: '#1A1310',   // raised cards, modals
+    hot: '#2A1A12',       // surfaces near the kiln glow / hover states
+  },
+  text: {
+    cream: '#F4EEE3',     // primary — warm off-white, never pure white
+    dim: '#8A7A6E',       // secondary, metadata
+  },
+  accent: {
+    ember: '#E85D2A',     // primary accent — molten orange, alive
+    crimson: '#C73A2D',   // deep accent for emphasis, warnings
+    gold: '#E8B14E',      // rare highlight — achievements, weekly synthesis
+  },
+  border: {
+    hairline: '#2A1F18',  // warm hairlines, never gray
+  },
+  // Time-of-day ember shifts (applied via useTimeOfDay hook)
+  ember: {
+    morning: '#E85D2A',   // 5 AM – 10 AM
+    midday:  '#FF6B2C',   // 10 AM – 4 PM
+    evening: '#C73A2D',   // 4 PM – 9 PM
+    late:    '#8B2419',   // 9 PM – 5 AM
+  },
 } as const;
 
-// theme/typography.ts — use system fonts for v1, custom in v2
+// theme/typography.ts — three-tier serif system
 export const type = {
-  display: { fontFamily: 'Georgia', fontWeight: '900' },  // serif, brutal
-  body: { fontFamily: 'System', fontWeight: '400' },
-  mono: { fontFamily: 'Menlo', fontWeight: '500' },
+  display: { fontFamily: 'Georgia', fontWeight: '900' as const },
+  // ↑ placeholder. Phase 3.5 swaps to PP Editorial New / Tiempos Headline via expo-font
+  body: { fontFamily: 'Georgia', fontWeight: '400' as const },
+  // ↑ literary serif for habit names, reflection content. Italic by default in habit rows.
+  mono: { fontFamily: 'Menlo', fontWeight: '500' as const },
+  // ↑ metadata, time labels, micro-text, data digits
   sizes: {
-    hero: 96, h1: 48, h2: 32, h3: 24, body: 16, label: 12, micro: 10,
+    hero: 96, h1: 56, h2: 32, h3: 22, body: 16, label: 12, micro: 10,
   },
 } as const;
 
@@ -112,7 +132,7 @@ export const type = {
 export const space = { 0: 0, 1: 4, 2: 8, 3: 12, 4: 16, 5: 24, 6: 32, 7: 48, 8: 64 } as const;
 ```
 
-No rounded corners on data containers. `borderRadius: 0` is the default. Buttons may use `borderRadius: 2` max.
+No rounded corners on data containers. `borderRadius: 0` is the default. Buttons may use `borderRadius: 2` max. Hairlines (1px dividers) use `colors.border.hairline` (warm dark), never gray.
 
 ---
 
@@ -194,5 +214,25 @@ Schema source of truth: supabase/migrations/
 - Custom font for display type (currently system Georgia placeholder). Candidates: Editorial New, PP Editorial, Times Now.
 - Whether to add a "ritual" sound when opening the weekly reflection.
 - Whether to expose the Reflector's raw output or a curated subset.
+
+---
+
+## 12. State vocabulary
+
+UI never uses "completed / skipped." Always use the kiln metaphor:
+
+- **FIRED** — habit completed. Display color: ember. Glyph: ✓
+- **BANKED** — habit intentionally skipped. No shame. Display color: dim. Glyph: —
+- **PENDING** — not yet due or in progress. Display color: cream.
+- **COOLED** — missed without action (passed scheduled time, no log). Display color: dim with strikethrough.
+
+---
+
+## 13. Visual patterns
+
+- **Marginalia**: small italic literary-serif text in margins, prefixed with a kiln glyph (small SVG). Used for voice-profile quotes under the next-pending habit. Indent 24pt from main content edge.
+- **Period grouping**: habits group by MORNING / MIDDAY / EVENING / LATE. Section header is mono uppercase, left-aligned, with right-aligned mono hour range. 1px hairline below header.
+- **Hairlines**: 1px, color `colors.border.hairline`. Never `#333` or any gray.
+- **No rounded corners on data containers.** Buttons may use `borderRadius: 2` max. Cards, modal bodies, habit rows: `borderRadius: 0`.
 
 End of CLAUDE.md.
