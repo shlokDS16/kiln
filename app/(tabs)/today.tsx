@@ -15,10 +15,12 @@
 // so exactly one HabitRow gets isNext === true at any moment.
 // =============================================================================
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, Text, View } from "react-native";
 
 import { useQueryClient } from "@tanstack/react-query";
+
+import { useHealthAutoComplete } from "../../lib/hooks/useHealthAutoComplete";
 
 import { DayPhrase } from "../../components/DayPhrase";
 import { EnergyTap } from "../../components/EnergyTap";
@@ -62,6 +64,16 @@ export default function Today() {
 
   const habits = todayQ.data ?? [];
   const streakDays = streakQ.data ?? 0;
+
+  // 4A.12 — auto-fire habits HealthKit confirms; toast the first one fired.
+  const autoFired = useHealthAutoComplete(habits);
+  const [toast, setToast] = useState<string | null>(null);
+  useEffect(() => {
+    if (autoFired.length === 0) return;
+    setToast(`${autoFired[0].toLowerCase()} · fired via apple health`);
+    const id = setTimeout(() => setToast(null), 4000);
+    return () => clearTimeout(id);
+  }, [autoFired]);
 
   // Heat = % of today's habits FIRED. If no habits today, heat=0 (banked).
   const totalToday = habits.length;
@@ -123,6 +135,7 @@ export default function Today() {
   }
 
   return (
+    <View className="flex-1 bg-deep">
     <ScrollView
       className="flex-1 bg-deep"
       contentContainerStyle={{ paddingBottom: 48 }}
@@ -178,5 +191,14 @@ export default function Today() {
         </Pressable>
       </View>
     </ScrollView>
+
+      {toast ? (
+        <View pointerEvents="none" style={{ position: "absolute", bottom: 24, left: 0, right: 0, alignItems: "center" }}>
+          <Text className="text-dim font-mono" style={{ fontSize: 10, backgroundColor: "#1A1310", paddingHorizontal: 12, paddingVertical: 6 }}>
+            {toast}
+          </Text>
+        </View>
+      ) : null}
+    </View>
   );
 }

@@ -34,6 +34,14 @@
           "backgroundColor": "#0E0906",
           "_comment": "TODO regenerate at 2732 before v0.2"
         }
+      ],
+      [
+        "react-native-health",
+        {
+          "isClinicalDataEnabled": false,
+          "healthSharePermission": "KILN reads sleep, HRV, steps, and workout data to ground its understanding of your state — so the kiln's heat reflects what you have actually done, not just what you have logged.",
+          "healthUpdatePermission": "KILN does not write to Apple Health. This permission is requested by the underlying library but unused."
+        }
       ]
     ],
     "experiments": {

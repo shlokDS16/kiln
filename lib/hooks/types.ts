@@ -44,6 +44,8 @@ export type TodayHabit = {
   scheduled_time: string;
   duration_min: number;
   status: HabitStatus;
+  target_value?: number | null;
+  note?: string | null;
 };
 
 /** Input to useLogHabit's mutate(). Only FIRED or BANKED can be set by the user. */

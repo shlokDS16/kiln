@@ -11,8 +11,8 @@
 // pass straight through to the Pressable.
 // =============================================================================
 
-import { useEffect } from "react";
-import { Pressable, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Modal, Pressable, Text, View } from "react-native";
 import * as Haptics from "expo-haptics";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
@@ -37,6 +37,7 @@ type Props = {
     scheduled_time: string;
     duration_min: number;
     status?: HabitStatus;
+    note?: string | null;
   };
   isNext?: boolean;
   readOnly?: boolean;
@@ -50,6 +51,10 @@ export function HabitRow({ habit, isNext = false, readOnly = false, onPress }: P
   const quote = useVoiceProfileQuote(isNext && !readOnly ? habit.habit_id : undefined);
 
   // isNext time-pulse (unchanged)
+  // CLAUDE.md §7.11 — ground-truth confirm before banking a HealthKit auto-FIRE.
+  const [confirmBank, setConfirmBank] = useState(false);
+  const isAutoFired = habit.status === "FIRED" && habit.note === "auto:healthkit";
+
   const pulse = useSharedValue(1);
   useEffect(() => {
     if (isNext && !readOnly) {
@@ -74,6 +79,10 @@ export function HabitRow({ habit, isNext = false, readOnly = false, onPress }: P
   const bank = () => {
     logHabit.mutate({ habit_id: habit.habit_id, status: "BANKED" });
   };
+  const requestBank = () => {
+    if (isAutoFired) { setConfirmBank(true); return; }
+    bank();
+  };
   const tick = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
   };
@@ -86,7 +95,7 @@ export function HabitRow({ habit, isNext = false, readOnly = false, onPress }: P
   };
   const handleLongPress = () => {
     if (readOnly) { onPress?.(); return; }
-    logHabit.mutate({ habit_id: habit.habit_id, status: "BANKED" });
+    requestBank();
   };
 
   const pan = Gesture.Pan()
@@ -110,7 +119,7 @@ export function HabitRow({ habit, isNext = false, readOnly = false, onPress }: P
         });
       } else if (e.translationX <= -w * THRESHOLD) {
         translateX.value = withTiming(-w, { duration: 160 }, (done) => {
-          if (done) { runOnJS(bank)(); translateX.value = 0; }
+          if (done) { runOnJS(requestBank)(); translateX.value = 0; }
         });
       } else {
         translateX.value = withSpring(0, { damping: 18, stiffness: 200 });
@@ -181,6 +190,27 @@ export function HabitRow({ habit, isNext = false, readOnly = false, onPress }: P
           <Marginalia text={quote.data} />
         </View>
       ) : null}
+
+      <Modal visible={confirmBank} transparent animationType="fade" onRequestClose={() => setConfirmBank(false)}>
+        <View className="flex-1 items-center justify-center px-6" style={{ backgroundColor: "rgba(14,9,6,0.85)" }}>
+          <View className="bg-surface w-full" style={{ maxWidth: 420, borderTopWidth: 1, borderBottomWidth: 1, borderColor: "#2A1F18" }}>
+            <Text className="text-cream font-body italic px-6 pt-6" style={{ fontSize: 18, lineHeight: 24 }}>
+              Apple Health logged this as fired. Bank anyway?
+            </Text>
+            <View className="flex-row justify-end items-center px-6 py-5">
+              <Pressable onPress={() => setConfirmBank(false)} className="mr-5 active:opacity-60">
+                <Text className="text-ember font-mono uppercase tracking-widest" style={{ fontSize: 11 }}>keep fired</Text>
+              </Pressable>
+              <Pressable
+                onPress={() => { setConfirmBank(false); bank(); }}
+                className="border border-crimson px-4 py-3 active:opacity-60"
+              >
+                <Text className="text-crimson font-mono uppercase tracking-widest" style={{ fontSize: 11 }}>bank anyway</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }

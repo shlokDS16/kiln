@@ -37,11 +37,13 @@ type HabitRow = {
   name: string;
   dimension: HabitDimension;
   schedule_jsonb: HabitSchedule | null;
+  target_value: number | null;
 };
 
 type LogRow = {
   habit_id: string;
   completed_at: string | null;
+  note: string | null;
 };
 
 export function useTodayHabits() {
@@ -59,12 +61,12 @@ export function useTodayHabits() {
       const [habitsRes, logsRes] = await Promise.all([
         supabase
           .from("habits")
-          .select("id, name, dimension, schedule_jsonb")
+          .select("id, name, dimension, schedule_jsonb, target_value")
           .eq("is_active", true)
           .is("deleted_at", null),
         supabase
           .from("daily_logs")
-          .select("habit_id, completed_at")
+          .select("habit_id, completed_at, note")
           .eq("log_date", today),
       ]);
 
@@ -98,6 +100,8 @@ export function useTodayHabits() {
           scheduled_time: sched.scheduled_time,
           duration_min: sched.duration_min,
           status,
+          target_value: h.target_value,
+          note: log?.note ?? null,
         });
       }
 
