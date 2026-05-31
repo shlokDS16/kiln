@@ -19,7 +19,9 @@ export type HabitDimension =
   | "energy"
   | "mood"
   | "diet"
-  | "sleep";
+  | "sleep"
+  | "body"
+  | "mind";
 
 export type DayKey = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
 

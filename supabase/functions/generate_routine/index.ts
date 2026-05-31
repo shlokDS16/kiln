@@ -125,6 +125,7 @@ const RESPONSE_SCHEMA = {
             required: ['name', 'dimension', 'scheduled_time', 'duration_min', 'days', 'rationale'],
             properties: {
               name:           { type: 'string' },
+              // TODO v0.2: expand to body/mind/general — requires behavioral-diff review per CLAUDE.md §9.5
               dimension:      { type: 'string', enum: ['habit', 'deep_work', 'focus_discipline', 'energy', 'mood', 'diet', 'sleep'] },
               scheduled_time: { type: 'string' },
               duration_min:   { type: 'integer' },

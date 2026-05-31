@@ -24,6 +24,8 @@ const DIMENSION_ORDER: HabitDimension[] = [
   "deep_work",
   "focus_discipline",
   "sleep",
+  "body",
+  "mind",
   "energy",
   "mood",
   "diet",
@@ -38,6 +40,8 @@ const DIMENSION_LABEL: Record<HabitDimension, string> = {
   mood:             "MOOD",
   diet:             "DIET",
   sleep:            "SLEEP",
+  body:             "BODY",
+  mind:             "MIND",
 };
 
 export default function Routines() {
@@ -50,7 +54,7 @@ export default function Routines() {
   // Group by dimension preserving DIMENSION_ORDER.
   const byDim = useMemo(() => {
     const groups: Record<HabitDimension, RoutineHabit[]> = {
-      habit: [], deep_work: [], focus_discipline: [], energy: [], mood: [], diet: [], sleep: [],
+      habit: [], deep_work: [], focus_discipline: [], energy: [], mood: [], diet: [], sleep: [], body: [], mind: [],
     };
     for (const h of habits) groups[h.dimension].push(h);
     return groups;

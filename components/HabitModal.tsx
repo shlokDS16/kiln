@@ -46,6 +46,8 @@ const DIMENSIONS: { key: HabitDimension; label: string }[] = [
   { key: "mood",             label: "MOOD" },
   { key: "diet",             label: "DIET" },
   { key: "sleep",            label: "SLEEP" },
+  { key: "body",             label: "BODY" },
+  { key: "mind",             label: "MIND" },
 ];
 
 const DAYS: { key: DayKey; short: string }[] = [
